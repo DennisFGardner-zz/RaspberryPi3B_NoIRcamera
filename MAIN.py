@@ -19,6 +19,6 @@ camera.brightness = 50 # not sure if this is before or after the capture,
 # I have not heard of a brightness adjustment before on a caera
 
 # grab an image
-camera.capture(timeStr+'.jpg')
+camera.capture('images/'+timeStr+'.jpg')
 
 
