@@ -10,6 +10,13 @@ from time import sleep
 
 
 def main():
+    # PARAMETERS
+
+    # number of images
+    N = 3600/2
+
+    # delay between images (seconds)
+    delay = 2
     
     # create instance of the PiCamera class
     camera = picamera.PiCamera()
@@ -20,14 +27,18 @@ def main():
     # I have not heard of a brightness adjustment before on a caera
 
 
-    for ii in range(0,20):
+    for ii in range(0,N):
 
         # timestamp w/ second accuracy 
         timeStr = getTimeStamp()
 
         # grab an image
         camera.capture('images/'+timeStr+'.jpg')
-        sleep(1)
+        
+        sleep(delay)
+        
+        print float(ii+1)/N * 100
+
 
 
 def getTimeStamp():
