@@ -33,7 +33,7 @@ def main():
         timeStr = getTimeStamp()
 
         # grab an image
-        camera.capture('images/'+timeStr+'.jpg')
+        camera.capture('timelapse/'+timeStr+'.jpg')
         
         sleep(delay)
         
