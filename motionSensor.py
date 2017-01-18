@@ -13,14 +13,21 @@ pinN = 7
 GPIO.setup(pinN, GPIO.IN)
 
 
-for ii in range(0,1000):
+try:
+    while True:
+        
+        moSen = GPIO.input(pinN)
 
-##    print ii
+        if moSen == 1:
+            if flag == 0:
+                print "Motion Detected!"
+                flag = 1
+        else:
+            flag = 0
 
-    moSen = GPIO.input(pinN)
-
-    print moSen
-
+except KeyboardInterrupt:
+    print "Exiting..."
+    pass
 
     
 GPIO.cleanup()
