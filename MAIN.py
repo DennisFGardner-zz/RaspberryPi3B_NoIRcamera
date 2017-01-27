@@ -1,44 +1,65 @@
 #!/usr/bin/env python
 """ MAIN.py
-This program takes images using the NoIR camera on a Raspberry Pi 3 B. 
+This program takes images using the NoIR camera on a Raspberry Pi 3 B.
+
+Last update: 01/27/2017
 """
 
 # import modules
 import picamera
 import datetime
 from time import sleep
+import RPi.GPIO as GPIO
 
 
 def main():
-    # PARAMETERS
-
-    # number of images
-    N = 3600/2
-
-    # delay between images (seconds)
-    delay = 2
     
+    # initialize parameters
+    pinN = 7
+    flag = 0
+    delay = 1 # time between images
+
+    # initialize board
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(pinN, GPIO.IN)
+
     # create instance of the PiCamera class
     camera = picamera.PiCamera()
     
     # set camera settings (I want to read about these more and optimize for low light)
     camera.vflip = True
-    camera.brightness = 50 # not sure if this is before or after the capture,
-    # I have not heard of a brightness adjustment before on a caera
 
+    print "System On" 
 
-    for ii in range(0,N):
+    try:
+        while True:
 
-        # timestamp w/ second accuracy 
-        timeStr = getTimeStamp()
+            moSen = GPIO.input(pinN)
 
-        # grab an image
-        camera.capture('timelapse/'+timeStr+'.jpg')
-        
-        sleep(delay)
-        
-        print float(ii+1)/N * 100
+            if moSen == 1:
+                if flag == 0:
+                    
+                    # timestamp w/ second accuracy 
+                    timeStr = getTimeStamp()
+                    
+                    print "Motion Detected at %s" % timeStr
+                    
+                    # grab an image
+                    camera.capture('images/'+timeStr+'.jpg')
+                    
+                    flag = 1
+                    
+                    sleep(delay)
 
+            else:
+                flag = 0
+
+    except KeyboardInterrupt:
+        print "Exiting..."
+        pass
+
+    print "cleaning up"
+    GPIO.cleanup()
 
 
 def getTimeStamp():
@@ -57,14 +78,10 @@ def getTimeStamp():
     return timeStr
 
 
-
-
 if __name__ == "__main__":
     main()
 
-
-
-
+print "System Off"
 
 
 
