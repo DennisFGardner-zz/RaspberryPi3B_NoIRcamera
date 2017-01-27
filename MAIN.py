@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 
 
 def main():
+
     
     # initialize parameters
     pinN = 7
@@ -58,8 +59,10 @@ def main():
         print "Exiting..."
         pass
 
-    print "cleaning up"
+    print "cleaning up..."
     GPIO.cleanup()
+    print "System Off"
+
 
 
 def getTimeStamp():
@@ -81,7 +84,6 @@ def getTimeStamp():
 if __name__ == "__main__":
     main()
 
-print "System Off"
 
 
 
